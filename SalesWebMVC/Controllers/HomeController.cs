@@ -25,6 +25,8 @@ namespace SalesWebMVC.Controllers
 
         public IActionResult Privacy()
         {
+            ViewData["Message"] = "Informações sobre as regras de privacidade.";
+            ViewData["email"] = "teste@teste.com";
             return View();
         }
 
