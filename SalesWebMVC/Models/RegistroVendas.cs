@@ -16,9 +16,9 @@ namespace SalesWebMVC.Models
         {
         }
 
-        public RegistroVendas(int id, DateTime dataVenda, double quantidade, SituacaoVendas situacaoVendas, Vendedor vendedor)
+        public RegistroVendas(DateTime dataVenda, double quantidade, SituacaoVendas situacaoVendas, Vendedor vendedor)
         {
-            Id = id;
+            //Id = id;
             DataVenda = dataVenda;
             Quantidade = quantidade;
             SituacaoVendas = situacaoVendas;
