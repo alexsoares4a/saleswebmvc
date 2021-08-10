@@ -24,5 +24,11 @@ namespace SalesWebMVC.Services
             //a lista com os registros
             return _context.Vendedor.ToList();
         }
+
+        public void Cadastrar(Vendedor vendedor)
+        {
+            _context.Add(vendedor);
+            _context.SaveChanges();
+        }
     }
 }

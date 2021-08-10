@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SalesWebMVC.Models;
 using SalesWebMVC.Services;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,19 @@ namespace SalesWebMVC.Controllers
         {
             var listaVendedores = _vendedorService.LocalizarTodos();
             return View(listaVendedores);
+        }
+
+        public IActionResult Cadastrar()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Cadastrar(Vendedor vendedor)
+        {
+            _vendedorService.Cadastrar(vendedor);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
