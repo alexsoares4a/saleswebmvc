@@ -41,5 +41,29 @@ namespace SalesWebMVC.Controllers
             _vendedorService.Cadastrar(vendedor);
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult Excluir(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _vendedorService.LocalizarPorId(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Excluir(int id)
+        {
+            _vendedorService.Remove(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
