@@ -11,7 +11,7 @@ namespace SalesWebMVC.Migrations
                 table: "Vendedor");
 
             migrationBuilder.RenameColumn(
-                name: "Name",
+                name: "Nome",
                 table: "Vendedor",
                 newName: "Nome");
 
