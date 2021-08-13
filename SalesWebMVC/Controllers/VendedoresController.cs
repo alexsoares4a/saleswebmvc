@@ -78,8 +78,15 @@ namespace SalesWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Excluir(int id)
         {
-            await _vendedorService.ExcluirAsync(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _vendedorService.ExcluirAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ApplicationException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
         }
 
         public async Task<IActionResult> Detalhes(int? id)
