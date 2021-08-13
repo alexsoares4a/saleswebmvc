@@ -23,41 +23,49 @@ namespace SalesWebMVC.Controllers
             _departamentoService = departamentoService;
         }
 
-        public IActionResult Index()
+        /*Método Assíncrono*/
+        public async Task<IActionResult> Index()
         {
-            var listaVendedores = _vendedorService.LocalizarTodos();
+            var listaVendedores = await _vendedorService.LocalizarTodosAsync();
             return View(listaVendedores);
         }
 
-        public IActionResult Cadastrar()
+        /*Método Síncrono*/
+        /*public IActionResult Index()
         {
-            var departamentos = _departamentoService.LocalizarTodos();
+            var listaVendedores = _vendedorService.LocalizarTodos();
+            return View(listaVendedores);
+        }*/
+
+        public async Task<IActionResult> Cadastrar()
+        {
+            var departamentos = await _departamentoService.LocalizarTodosAsync();
             var viewModel = new VendedorFormViewModel { Departamentos = departamentos };
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Cadastrar(Vendedor vendedor)
+        public async Task<IActionResult> Cadastrar(Vendedor vendedor)
         {
             if (!ModelState.IsValid)
             {
-                var departamentos = _departamentoService.LocalizarTodos();
+                var departamentos = await _departamentoService.LocalizarTodosAsync();
                 var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departamentos };
                 return View(viewModel);
             }
-            _vendedorService.Cadastrar(vendedor);
+            await _vendedorService.CadastrarAsync(vendedor);
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Excluir(int? id)
+        public async Task<IActionResult> Excluir(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido." });
             }
 
-            var obj = _vendedorService.LocalizarPorId(id.Value);
+            var obj = await _vendedorService.LocalizarPorIdAsync(id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não encontrado." });
@@ -68,20 +76,20 @@ namespace SalesWebMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Excluir(int id)
+        public async Task<IActionResult> Excluir(int id)
         {
-            _vendedorService.Excluir(id);
+            await _vendedorService.ExcluirAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Detalhes(int? id)
+        public async Task<IActionResult> Detalhes(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido." });
             }
 
-            var obj = _vendedorService.LocalizarPorId(id.Value);
+            var obj = await _vendedorService.LocalizarPorIdAsync(id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não encontrado." });
@@ -90,31 +98,31 @@ namespace SalesWebMVC.Controllers
             return View(obj);
         }
 
-        public IActionResult Alterar(int? id)
+        public async Task<IActionResult> Alterar(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido." });
             }
 
-            var obj = _vendedorService.LocalizarPorId(id.Value);
+            var obj = await _vendedorService.LocalizarPorIdAsync(id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não encontrado." });
             }
 
-            List<Departamento> departamentos = _departamentoService.LocalizarTodos();
+            List<Departamento> departamentos = await _departamentoService.LocalizarTodosAsync();
             VendedorFormViewModel viewModel = new VendedorFormViewModel { Vendedor = obj, Departamentos = departamentos };
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Alterar(int id, Vendedor vendedor)
+        public async Task<IActionResult> Alterar(int id, Vendedor vendedor)
         {
             if (!ModelState.IsValid)
             {
-                var departamentos = _departamentoService.LocalizarTodos();
+                var departamentos = await _departamentoService.LocalizarTodosAsync();
                 var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departamentos };
                 return View(viewModel);
             }
@@ -126,7 +134,7 @@ namespace SalesWebMVC.Controllers
 
             try
             {
-                _vendedorService.Atualizar(vendedor);
+                await _vendedorService.AtualizarAsync(vendedor);
                 return RedirectToAction(nameof(Index));
             }
             catch (ApplicationException e)

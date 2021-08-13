@@ -1,4 +1,5 @@
-﻿using SalesWebMVC.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SalesWebMVC.Data;
 using SalesWebMVC.Models;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,16 @@ namespace SalesWebMVC.Services
             _context = context;
         }
 
-        public List<Departamento> LocalizarTodos()
+        /* Implementação Assincrona usando Task*/
+        public async Task<List<Departamento>> LocalizarTodosAsync()
+        {
+            return await _context.Departamento.OrderBy(d => d.NomeDepartamento).ToListAsync();
+        }
+
+        /*Implementação Sincrona*/
+        /*public List<Departamento> LocalizarTodos()
         {
             return _context.Departamento.OrderBy(d => d.NomeDepartamento).ToList();
-        }
+        }*/
     }
 }
